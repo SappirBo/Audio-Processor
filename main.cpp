@@ -2,7 +2,8 @@
 #include <iostream>
 
 int main() {
-    AudioIO audioIO("/home/sappirb/code/Audio-Processor/data/AmrDiab - Tamally Maak.wav");
+    AudioIO audioIO("/home/sappirb/code/Audio-Processor/data/data1.wav");
+    // AudioIO audioIO("/home/sappirb/code/Audio-Processor/data/AmrDiab - Tamally Maak.wav");
     if (!audioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
         return 1;
@@ -11,7 +12,7 @@ int main() {
     std::cout << audioIO ;
 
     // Process samples (e.g., apply gain)
-    float gain = 10;  // Example gain
+    float gain = 0;  // Example gain
     for (auto& sample : audioIO.getSamples()) {
         sample = static_cast<short>(sample * gain);
     }

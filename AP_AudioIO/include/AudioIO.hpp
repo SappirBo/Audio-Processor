@@ -12,17 +12,19 @@ public:
     bool save(const std::string& filename);
     std::vector<short>& getSamples();
     std::string getFilePath() const;
-    int getSampleRate() const;
-    int getBitsPerSample() const;
-    int getNumChannels() const;
+    uint32_t getSampleRate() const;
+    short getBitsPerSample() const;
+    short getNumChannels() const;
+    
 
     friend std::ostream& operator<< (std::ostream& out, const AudioIO& obj); 
 
 private:
     std::string filePath;
-    int sampleRate;
-    int bitsPerSample;
-    int numChannels;
+    uint32_t sampleRate;
+    uint32_t dataSize;
+    short bitsPerSample;
+    short numChannels;
     std::vector<short> samples;
 
     bool readHeader(std::ifstream& file);
