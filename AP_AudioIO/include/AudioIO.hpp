@@ -11,9 +11,12 @@ public:
     bool load();
     bool save(const std::string& filename);
     std::vector<short>& getSamples();
+    std::string getFilePath() const;
     int getSampleRate() const;
     int getBitsPerSample() const;
     int getNumChannels() const;
+
+    friend std::ostream& operator<< (std::ostream& out, const AudioIO& obj); 
 
 private:
     std::string filePath;

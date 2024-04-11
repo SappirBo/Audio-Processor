@@ -17,7 +17,8 @@ bool AudioIO::load() {
 
     samples.clear();
     short buffer;
-    while (file.read(reinterpret_cast<char*>(&buffer), sizeof(buffer))) {
+    while (file.read(reinterpret_cast<char*>(&buffer), sizeof(buffer))) 
+    {
         samples.push_back(buffer);
     }
 
@@ -49,6 +50,11 @@ std::vector<short>& AudioIO::getSamples() {
     return samples;
 }
 
+std::string AudioIO::getFilePath() const
+{
+    return filePath;
+}
+
 int AudioIO::getSampleRate() const {
     return sampleRate;
 }
@@ -73,9 +79,18 @@ bool AudioIO::readHeader(std::ifstream& file) {
 }
 
 bool AudioIO::writeHeader(std::ofstream& file) {
-    // Construct and write a WAV header based on the current object's data
-    // This example will just write a dummy header; you should replace it with actual data
     char buffer[44] = {0};
+
     file.write(buffer, 44);
     return file.good();
+}
+
+std::ostream& operator<< (std::ostream& out, const AudioIO& obj)
+{
+    out << "File Path: "<< obj.getFilePath() << "\n";
+    out << "Sample Rate: "<< obj.getSampleRate() << "\n";
+    out << "Bits Per Sample: "<< obj.getBitsPerSample() << "\n";
+    out << "Number Of Channels: "<< obj.getNumChannels() << "\n";
+
+    return out;
 }
