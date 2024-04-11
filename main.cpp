@@ -1,4 +1,5 @@
 #include "AP_AudioIO/include/AudioIO.hpp"
+#include "AP_Drive/include/AP_Drive.hpp"
 #include <iostream>
 
 int main() {
@@ -11,11 +12,8 @@ int main() {
 
     std::cout << audioIO ;
 
-  
-    float gain = 1;  
-    for (auto& sample : audioIO.getSamples()) {
-        sample = static_cast<int32_t>(sample * gain);
-    }
+    AP_Drive drive{audioIO,1,1,1};
+    drive.processAudio();
 
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/data/output.wav")) {
         std::cerr << "Failed to save audio." << std::endl;

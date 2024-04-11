@@ -13,11 +13,17 @@ add_compile_options(-Wall -Wextra -pedantic)
 # Include the AudioIO subdirectory
 add_subdirectory(AP_AudioIO)
 
+# Include the AP_Drive subdirectory if it's a separate module
+add_subdirectory(AP_Drive)
+
 # Add executable for the main application
 add_executable(AudioApp main.cpp)
 
-# Link the AudioIO library to the executable
-target_link_libraries(AudioApp PRIVATE AudioIO)
+# Link the AudioIO library and the AP_Drive module to the executable
+target_link_libraries(AudioApp PRIVATE AudioIO AP_Drive)
 
 # Include directories for the AudioIO library
 target_include_directories(AudioApp PRIVATE ${PROJECT_SOURCE_DIR}/AP_AudioIO/include)
+
+# Include directories for the AP_Drive module if needed
+target_include_directories(AudioApp PRIVATE ${PROJECT_SOURCE_DIR}/AP_Drive/include)
