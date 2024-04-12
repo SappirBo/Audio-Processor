@@ -12,7 +12,7 @@ int main() {
 
     std::cout << audioIO ;
 
-    AP_Drive drive{audioIO,1,1,1};
+    AP_Drive drive{audioIO,1,1,0.1};
     drive.processAudio();
 
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/data/output.wav")) {

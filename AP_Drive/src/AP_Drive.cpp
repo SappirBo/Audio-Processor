@@ -19,19 +19,18 @@ void AP_Drive::setDrive(float d) {
 
 void AP_Drive::processAudio() {
     std::vector<int32_t>& samples = audio.getSamples();
+    const float scaleFactor = INT32_MAX;
+
     for (auto& sample : samples) {
-        float processedSample = static_cast<float>(sample);
+        float processedSample = static_cast<float>(sample) / scaleFactor; // Normalize to -1 to 1
         
         processedSample = applyGain(processedSample, gain);
-
         processedSample = applyDrive(processedSample, drive);
-
         processedSample *= volume;
-
-        // Clip to prevent overflow
-        processedSample = std::max(std::min(processedSample, static_cast<float>(INT32_MAX)), static_cast<float>(INT32_MIN));
-
-        sample = static_cast<int32_t>(processedSample);
+        
+        // Clip and scale back to original range
+        processedSample = std::max(std::min(processedSample, 1.0f), -1.0f);
+        sample = static_cast<int32_t>(processedSample * scaleFactor);
     }
 }
 
@@ -40,7 +39,7 @@ float AP_Drive::applyGain(float sample, float gainLevel) {
 }
 
 float AP_Drive::applyDrive(float sample, float driveLevel) {
-    // Soft clipping formula: a form of distortion
-    float theta = std::atan(sample * driveLevel);
+    float drive_to_apply{sample * driveLevel};
+    float theta = std::atan(drive_to_apply);
     return theta;
 }

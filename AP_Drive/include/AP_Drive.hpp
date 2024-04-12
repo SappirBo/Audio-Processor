@@ -2,6 +2,7 @@
 #define AP_DRIVE_H
 
 #include "AudioIO.hpp"
+#include <iostream>
 
 class AP_Drive {
 public:
