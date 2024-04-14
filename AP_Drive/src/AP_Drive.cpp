@@ -25,7 +25,7 @@ void AP_Drive::processAudio() {
         float processedSample = static_cast<float>(sample) / scaleFactor; // Normalize to -1 to 1
         
         processedSample = applyGain(processedSample, gain);
-        processedSample = applyDrive(processedSample, drive);
+        // processedSample = applyDrive(processedSample, drive);
         processedSample *= volume;
         
         // Clip and scale back to original range

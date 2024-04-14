@@ -35,8 +35,5 @@
 # Build
 build/
 
-# Data
-data/
-
 # VsCode
 .vscode/
