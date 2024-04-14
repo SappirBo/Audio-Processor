@@ -8,7 +8,8 @@ std::vector<std::string> data_path{
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Bass.wav",
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Guitar.wav",
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Drums.wav",
-    "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Piano.wav"
+    "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Piano.wav",
+    "/home/sappirb/code/Audio-Processor/data/data1.wav"
 };
 
 int main() {
@@ -21,8 +22,8 @@ int main() {
 
     std::cout << audioIO ; 
 
-    // AP_Drive drive{audioIO,1,1,1};
-    // drive.processAudio();
+    AP_Drive drive{audioIO,1,5,1};
+    drive.processAudio();
 
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
         std::cerr << "Failed to save audio." << std::endl;

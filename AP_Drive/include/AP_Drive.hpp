@@ -6,21 +6,21 @@
 
 class AP_Drive {
 public:
-    AP_Drive(AudioIO& audio, float volume = 1.0f, float gain = 1.0f, float drive = 0.0f);
+    AP_Drive(AudioIO& audio, int32_t volume = 1, int32_t gain = 1, int32_t drive = 0);
 
     void processAudio();
-    void setVolume(float volume);
-    void setGain(float gain);
-    void setDrive(float drive);
+    void setVolume(int32_t volume);
+    void setGain(int32_t gain);
+    void setDrive(int32_t drive);
 
 private:
-    AudioIO& audio;
-    float volume;
-    float gain;
-    float drive;
+    AudioIO& m_audio;
+    int32_t m_volume;
+    int32_t m_gain;
+    int32_t m_drive;
 
-    float applyGain(float sample, float gainLevel);
-    float applyDrive(float sample, float driveLevel);
+    int32_t applyGain (int32_t sample);
+    int32_t applyDrive(int32_t sample);
 };
 
 #endif // AP_DRIVE_H
