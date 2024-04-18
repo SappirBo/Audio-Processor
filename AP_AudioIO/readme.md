@@ -10,3 +10,4 @@ Reading the file refers to normal WAV files, another thing I came across during 
 
 ### Resources
 1. https://ccrma.stanford.edu/courses/422-winter-2014/projects/WaveFormat/
+2. https://www.youtube.com/watch?v=qqjvB_VxMRM&t=38s&ab_channel=AkashMurthy
