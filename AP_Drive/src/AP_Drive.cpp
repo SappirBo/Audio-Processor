@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-AP_Drive::AP_Drive(AudioIO& audio, int32_t volume, int32_t gain, int32_t drive):
+AP_Drive::AP_Drive(AudioIO& audio, int16_t volume, int16_t gain, int16_t drive):
 m_audio(audio)
 {
     setVolume((volume > 10) ? 10 : (volume < -10) ? -10 : volume);
@@ -10,27 +10,27 @@ m_audio(audio)
     setDrive((drive > 10) ? 10 : (drive < -10) ? -10 : drive);
 }
 
-void AP_Drive::setVolume(int32_t v) {
+void AP_Drive::setVolume(int16_t v) {
     m_volume = v;
 }
 
-void AP_Drive::setGain(int32_t g) {
+void AP_Drive::setGain(int16_t g) {
     m_gain = g;
 }
 
-void AP_Drive::setDrive(int32_t d) {
+void AP_Drive::setDrive(int16_t d) {
     m_drive = d;
 }
 
-void AP_Drive::processAudio() {
-    // std::vector<int32_t>& samples = m_audio.getSamples();
+void AP_Drive::processAudio() {    
     
     for (auto& sample : m_audio.getSamples()) {
         sample = applyGain(sample);
+        sample += applyDrive(sample);
     }
 }
 
-int32_t AP_Drive::applyGain(int32_t sample) {
+int16_t AP_Drive::applyGain(int16_t sample) {
     double gain_level_scaled{static_cast<double>(m_gain)/100};
 
     double gain_factor{gain_level_scaled * static_cast<double>(sample)};
@@ -44,8 +44,9 @@ int32_t AP_Drive::applyGain(int32_t sample) {
     return static_cast<int32_t>(temp_sample);
 }
 
-int32_t AP_Drive::applyDrive(int32_t sample) {
-    int32_t drive_to_apply{sample * m_drive};
-    int32_t theta = std::atan(drive_to_apply);
-    return theta;
+int16_t AP_Drive::applyDrive(int16_t sample) {
+    float drive_to_apply{float(sample * m_drive) / INT16_MAX};
+    float theta = std::atan(drive_to_apply);
+    int16_t drive = int16_t(INT16_MAX*theta) ;
+    return abs(drive) < INT16_MAX? drive : INT16_MAX ;
 }
