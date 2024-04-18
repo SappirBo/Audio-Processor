@@ -15,7 +15,7 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AudioIO audioIO(data_path.at(5));
+    AudioIO audioIO(data_path.at(1));
 
     if (!audioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
@@ -25,7 +25,7 @@ int main() {
     std::cout << audioIO ; 
 
     // Drive is set to be 0-100
-    AP_Drive drive{audioIO,1};
+    AP_Drive drive{audioIO,20,100};
     drive.processAudio();
 
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
