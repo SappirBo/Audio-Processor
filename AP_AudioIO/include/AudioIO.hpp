@@ -44,6 +44,8 @@ public:
     int32_t getDataSize() const { return m_dataSize; }
 
     void analyzeWAV();
+
+    void setSamples(std::vector<int16_t> samples);
     
 
     friend std::ostream& operator<< (std::ostream& out, const AudioIO& obj); 

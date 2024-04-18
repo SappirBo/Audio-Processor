@@ -221,3 +221,9 @@ void AudioIO::analyzeWAV() {
 
     file.close();
 }
+
+
+void AudioIO::setSamples(std::vector<int16_t> samples)
+{
+    m_samples = samples;
+}

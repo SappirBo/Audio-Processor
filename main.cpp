@@ -1,5 +1,6 @@
 #include "AP_AudioIO/include/AudioIO.hpp"
 #include "AP_Drive/include/AP_Drive.hpp"
+#include "AP_Delay/include/AP_Delay.hpp"
 #include <iostream>
 #include <vector>
 
@@ -15,7 +16,7 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AudioIO audioIO(data_path.at(1));
+    AudioIO audioIO(data_path.at(0));
 
     if (!audioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
@@ -25,8 +26,11 @@ int main() {
     std::cout << audioIO ; 
 
     // Drive is set to be 0-100
-    AP_Drive drive{audioIO,20,100};
-    drive.processAudio();
+    // AP_Drive drive{audioIO,50,50};
+    // drive.processAudio();
+
+    AP_Delay delay{audioIO,10,1000};
+    delay.processAudio();
 
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
         std::cerr << "Failed to save audio." << std::endl;
