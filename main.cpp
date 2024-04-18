@@ -24,7 +24,8 @@ int main() {
 
     std::cout << audioIO ; 
 
-    AP_Drive drive{audioIO,1,1,3};
+    // Drive is set to be 0-100
+    AP_Drive drive{audioIO,1};
     drive.processAudio();
 
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
