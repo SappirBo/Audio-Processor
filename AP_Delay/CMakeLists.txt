@@ -14,3 +14,8 @@ target_include_directories(AP_Delay PUBLIC
 
 # You need to ensure this path is correct relative to the location of this CMakeLists.txt
 target_include_directories(AP_Delay PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../AP_AudioIO/include)
+
+target_include_directories(AP_Delay PRIVATE ${PROJECT_SOURCE_DIR}/AP_Audio_Effect/include)
+
+# Linking against AP_Audio_Effect library
+target_link_libraries(AP_Delay PRIVATE AP_Audio_Effect)

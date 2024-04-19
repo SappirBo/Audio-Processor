@@ -2,25 +2,22 @@
 #include <algorithm>
 #include <cmath>
 
-AP_Drive::AP_Drive(AudioIO& audio,int16_t level, int16_t drive):
-m_audio(audio)
+AP_Drive::AP_Drive(AudioIO& audio,int32_t mix, int16_t level, int16_t drive):
+m_audio(audio), AP_Audio_Effect(mix, level)
 {
     setDrive((drive > 100) ? 100 : (drive < 0)? 0: drive);
-    setLevel((level > 100) ? 100 : (level < 0)? 0: level);
 }
 
 void AP_Drive::setDrive(int16_t d) {
     m_drive = float(d)/100;
 }
 
-void AP_Drive::setLevel(int16_t l) {
-    m_level = l;
-}
-
 void AP_Drive::processAudio() {    
     for (auto& sample : m_audio.getSamples()) 
     {
-        sample = applyDrive(sample);
+        int16_t drived_sample = applyDrive(sample);
+        float scaled_with_mix = (m_mix) * float(drived_sample) + (1-m_mix) * float(sample); 
+        sample = int16_t(scaled_with_mix); 
         sample = applyLevel(sample);
     }
 }
@@ -38,17 +35,4 @@ int16_t AP_Drive::applyDrive(int16_t sample) {
     int16_t drive = INT16_MAX * theta;
 
     return drive ;
-}
-
-int16_t AP_Drive::applyLevel(int16_t sample) {
-    
-    float sample_scaled{float(sample) / INT16_MAX};
-
-    float level_scaled{(float(m_level)/100)};
-
-    float sample_times_leveling{sample_scaled * level_scaled};
-
-    int16_t sample_leveled = int16_t(float(INT16_MAX) * sample_times_leveling) ;
-
-    return sample_leveled ;
 }
