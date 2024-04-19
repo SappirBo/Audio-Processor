@@ -26,6 +26,7 @@ public:
 
 private:
     int16_t applyDelay(int16_t sample);
+    std::vector<int16_t> getRemainingSamples();
 
 };
 

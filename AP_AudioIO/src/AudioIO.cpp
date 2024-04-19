@@ -150,6 +150,10 @@ bool AudioIO::readHeaderwithoutJunk(std::ifstream& file, char buffer[])
 }
 
 bool AudioIO::writeHeader(std::ofstream& audio_file){
+    m_dataSize = m_samples.size() * m_numChannels * m_byteRate;
+    m_FileSize = 36 + m_dataSize;
+
+
     //Header Chunck
     audio_file << "RIFF";
     audio_file << "----";
@@ -170,7 +174,8 @@ bool AudioIO::writeHeader(std::ofstream& audio_file){
 
     //Data Chunck
     audio_file << "data";
-    audio_file << "----";
+    // audio_file << "----";
+    writeToFile(audio_file,m_dataSize,4); // bit depth
 
     return true;
 }
@@ -193,7 +198,6 @@ std::ostream& operator<< (std::ostream& out, const AudioIO& obj)
 
     return out;
 }
-
 
 void AudioIO::analyzeWAV() {
     std::ifstream file(filePath, std::ios::binary);
@@ -221,7 +225,6 @@ void AudioIO::analyzeWAV() {
 
     file.close();
 }
-
 
 void AudioIO::setSamples(std::vector<int16_t> samples)
 {

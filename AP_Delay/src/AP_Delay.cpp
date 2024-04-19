@@ -16,6 +16,7 @@ AP_Delay::~AP_Delay()
 
 void AP_Delay::setFeedBack(float f)
 {
+    f = f > 900? 900: (f < 0? 0: f);
     m_feedback = f/1000;
 }
 
@@ -31,6 +32,10 @@ void AP_Delay::processAudio()
     {
         output_samples.push_back(applyDelay(sample));
     }
+
+    std::vector<int16_t> remain_delay = getRemainingSamples();
+
+    output_samples.insert(output_samples.end(), remain_delay.begin(), remain_delay.end());
     
     m_audio.setSamples(output_samples);
 }
@@ -48,4 +53,31 @@ int16_t AP_Delay::applyDelay(int16_t sample)
     write_index = (write_index + 1) % m_delay_buffer.size();
 
     return out_sample;
+}
+
+std::vector<int16_t> AP_Delay::getRemainingSamples()
+{
+    std::vector<int16_t> remain_samples;
+    int32_t threashhold{1};
+
+    while(std::abs(m_delay_buffer.at(write_index)) > threashhold)
+    {
+        int16_t sampled_delayed{m_delay_buffer.at(write_index)};
+        m_delay_buffer[write_index] = static_cast<int16_t>(m_feedback* 0.5 * sampled_delayed);
+        remain_samples.push_back(sampled_delayed);
+        write_index = (write_index + 1) % m_delay_buffer.size();
+    }
+
+    // int32_t write_index_copy{write_index};
+    // int32_t i{0};
+    // while(i++ < write_index_copy)
+    // {
+    //     int16_t sampled_delayed{m_delay_buffer.at(write_index)};
+    //     // m_delay_buffer[write_index] = static_cast<int16_t>(m_feedback * sampled_delayed);
+    //     remain_samples.push_back(sampled_delayed);
+    //     write_index = (write_index + 1) % m_delay_buffer.size();
+    // }
+
+
+    return remain_samples;
 }
