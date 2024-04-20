@@ -17,7 +17,7 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AudioIO audioIO(data_path.at(4));
+    AudioIO audioIO(data_path.at(0));
 
     if (!audioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
