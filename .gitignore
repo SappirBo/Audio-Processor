@@ -37,3 +37,5 @@ build/
 
 # VsCode
 .vscode/
+
+tools/__pycache__

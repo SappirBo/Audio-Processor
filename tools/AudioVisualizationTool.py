@@ -1,21 +1,10 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
-
-path_to_data = '/home/sappirb/code/Audio-Processor/data/'
-path_to_output = '/home/sappirb/code/Audio-Processor/output/output.wav'
-
-path_list = [
-    path_to_data + 'Audio_Processor_StereoOut.wav',
-    path_to_data + 'Audio_Processor_Bass.wav',
-    path_to_data + 'Audio_Processor_Guitar.wav',
-    path_to_data + 'Audio_Processor_Piano.wav',
-    path_to_data + 'Audio_Processor_Drums.wav',
-    path_to_output
-]
+from PathList import PathList
 
 # Load WAV file
-wav_obj = wave.open(path_list[0], 'rb')
+wav_obj = wave.open(PathList.path_to_output, 'rb')
 
 # Get audio properties
 sample_freq = wav_obj.getframerate()
