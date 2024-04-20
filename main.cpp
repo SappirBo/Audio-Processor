@@ -17,7 +17,7 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AudioIO audioIO(data_path.at(2));
+    AudioIO audioIO(data_path.at(4));
 
     if (!audioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
@@ -27,16 +27,16 @@ int main() {
     std::cout << audioIO ; 
 
     // Drive is set to be 0-100
-    AP_Drive drive{audioIO,0, 100, 100};
+    AP_Drive drive{audioIO,100, 15, 100};
     drive.processAudio();
 
-    std::cout << "- - - Before delay: " << audioIO.getSamples().size() ;
+    // std::cout << "- - - Before delay: " << audioIO.getSamples().size() ;
     
     // Delay time is best in 3000 to 2 bars
-    AP_Delay delay{audioIO,50, 700, 6000};
+    AP_Delay delay{audioIO,20, 200, 2225};
     delay.processAudio();
     
-    std::cout << "| After delay: " << audioIO.getSamples().size() << std::endl;
+    // std::cout << "| After delay: " << audioIO.getSamples().size() << std::endl;
     
     
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
