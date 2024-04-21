@@ -1,6 +1,7 @@
 # ifndef AP_AUDIO_EFFECT_HPP
 # define AP_AUDIO_EFFECT_HPP
 
+#include "AP_AudioIO.hpp"
 #include <cstdint>
 #include <iostream>
 
@@ -10,9 +11,12 @@ class AP_Audio_Effect
 public:
     float m_mix;
     int32_t m_level;
+    AP_AudioIO& m_audio;
 
     // Constructor (optional, depending on whether you need to initialize m_mix)
-    explicit AP_Audio_Effect(int32_t mix = 0, int32_t level = 0){
+    explicit AP_Audio_Effect(AP_AudioIO& audio, int32_t mix = 0, int32_t level = 0):
+    m_audio(audio)
+    {
         setMix(mix);
         setLevel(level);
     }

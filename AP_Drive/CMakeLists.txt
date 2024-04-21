@@ -12,7 +12,7 @@ target_include_directories(AP_Drive PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
-# Include the AudioIO module. Assuming the path is relative to this CMakeLists.txt.
+# Include the AP_AudioIO module. Assuming the path is relative to this CMakeLists.txt.
 target_include_directories(AP_Drive PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../AP_AudioIO/include)
 
 # Include the AP_Audio_Effect module

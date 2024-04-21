@@ -22,9 +22,9 @@ struct WAVHeader {
 };
 
 
-class AudioIO {
+class AP_AudioIO {
 public:
-    AudioIO(const std::string& filename);
+    AP_AudioIO(const std::string& filename);
     bool load();
     bool save(const std::string& filename);
     std::vector<int16_t>& getSamples();
@@ -48,7 +48,7 @@ public:
     void setSamples(std::vector<int16_t> samples);
     
 
-    friend std::ostream& operator<< (std::ostream& out, const AudioIO& obj); 
+    friend std::ostream& operator<< (std::ostream& out, const AP_AudioIO& obj); 
 
 private:
     std::string filePath;
@@ -74,7 +74,7 @@ private:
     bool writeHeader(std::ofstream& file);
 
     bool readHeaderwithJunk(std::ifstream& file, char buffer[]);
-    bool readHeaderwithoutJunk(std::ifstream& file, char buffer[]);
+    bool readHeaderwithoutJunk(char buffer[]);
 
     void writeToFile(std::ofstream &file, int32_t value, int32_t size);
 };

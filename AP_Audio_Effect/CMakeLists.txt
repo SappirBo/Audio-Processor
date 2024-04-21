@@ -18,3 +18,12 @@ add_library(AP_Audio_Effect STATIC
 target_include_directories(AP_Audio_Effect PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+# Include the directory where AP_AudioIO.hpp is located
+target_include_directories(AP_Audio_Effect PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../AP_AudioIO/include
+)
+
+# Assuming AP_AudioIO is also a target in your project, you should link it
+# If AP_AudioIO is not a target and is a precompiled library, you need to find it using find_library() or specify it differently
+target_link_libraries(AP_Audio_Effect PRIVATE AP_AudioIO)

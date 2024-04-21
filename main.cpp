@@ -1,4 +1,4 @@
-#include "AP_AudioIO/include/AudioIO.hpp"
+#include "AP_AudioIO/include/AP_AudioIO.hpp"
 #include "AP_Drive/include/AP_Drive.hpp"
 #include "AP_Delay/include/AP_Delay.hpp"
 #include "AP_Audio_Effect/include/AP_Audio_Effect.hpp"
@@ -19,9 +19,9 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AudioIO audioIO(data_path.at(4));
+    AP_AudioIO AP_AudioIO(data_path.at(4));
 
-    if (!audioIO.load()) {
+    if (!AP_AudioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
         return 1;
     }
@@ -29,16 +29,17 @@ int main() {
     std::vector<std::unique_ptr<AP_Audio_Effect>> effect_chain;
 
     // Drive is set to be 0-100
-    effect_chain.push_back(std::make_unique<AP_Drive>(audioIO,50, 95, 100));
+    effect_chain.push_back(std::make_unique<AP_Drive>(AP_AudioIO,70, 50, 60));
+    
     // Delay time is best in 3000 to 2 bars
-    effect_chain.push_back(std::make_unique<AP_Delay>(audioIO,35, 200, 2225));
+    effect_chain.push_back(std::make_unique<AP_Delay>(AP_AudioIO,5, 600, 1500));
 
     for(auto& effect : effect_chain)
     {
         effect->processAudio();
     }
     
-    if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
+    if (!AP_AudioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
         std::cerr << "Failed to save audio." << std::endl;
         return 1;
     }

@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from PathList import PathList
 
 # Load WAV file
-wav_obj = wave.open(PathList.path_to_output, 'rb')
-# wav_obj = wave.open(PathList.path_list[0], 'rb')
+# wav_obj = wave.open(PathList.path_to_output, 'rb')
+wav_obj = wave.open(PathList.path_list[0], 'rb')
 
 # Get audio properties
 sample_freq = wav_obj.getframerate()

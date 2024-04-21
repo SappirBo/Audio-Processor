@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <cmath>
 
-AP_Drive::AP_Drive(AudioIO& audio,int32_t mix, int16_t level, int16_t drive):
-m_audio(audio), AP_Audio_Effect(mix, level)
+AP_Drive::AP_Drive(AP_AudioIO& audio,int32_t mix, int16_t level, int16_t drive):
+AP_Audio_Effect(audio, mix, level)
 {
     setDrive((drive > 100) ? 100 : (drive < 0)? 0: drive);
 }

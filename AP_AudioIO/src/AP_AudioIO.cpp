@@ -1,18 +1,15 @@
-#include "AudioIO.hpp"
+#include "AP_AudioIO.hpp"
 #include <iostream>
 #include <cstring> 
 
-AudioIO::AudioIO(const std::string& filename) : filePath(filename) {}
+AP_AudioIO::AP_AudioIO(const std::string& filename) : filePath(filename) {}
 
-bool AudioIO::load() {
+bool AP_AudioIO::load() {
     std::ifstream file(filePath, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filePath << std::endl;
         return false;
     }
-    file.seekg(0,file.end);
-    int total_num_of_bytes = file.tellg();
-    file.seekg (0, file.beg);
 
     if (!readHeader(file)) {
         std::cerr << "Failed to read header from file: " << filePath << std::endl;
@@ -22,29 +19,16 @@ bool AudioIO::load() {
     m_samples.clear();
     int16_t buffer;
 
-    int pos_before_samples = file.tellg();
-    int bytes_before_read_samples = total_num_of_bytes - pos_before_samples;
-
-    // int max=0;
     while (file.read(reinterpret_cast<char*>(&buffer), sizeof(buffer))) {
-        // max = abs(buffer)>max? abs(buffer): max; 
         m_samples.push_back(buffer);
     }
     m_samples.erase(m_samples.end() - 1045,m_samples.end() );
-    // int pos_After_samples = file.tellg();
-    // int bytes_after_read_samples = total_num_of_bytes - pos_After_samples;
-
-    // std::cout << "Max Sample Load: " << max << std::endl;
-    // std::cout << "Total number of Bytes: " << total_num_of_bytes << std::endl;
-    // std::cout << "Bytes remain before reading samples: " << bytes_before_read_samples << std::endl;
-    // std::cout << "Bytes remain after reading samples: " << bytes_after_read_samples << std::endl;
-    // std::cout << "pos_After_samples" <<pos_After_samples << std::endl;
 
     file.close();
     return true;
 }
 
-bool AudioIO::save(const std::string& filename) {
+bool AP_AudioIO::save(const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Failed to open file for writing: " << filename << std::endl;
@@ -56,15 +40,10 @@ bool AudioIO::save(const std::string& filename) {
         return false;
     }
 
-    // int max{0};
-    int preAudioPosition = file.tellp();
     for (auto sample : m_samples) {
-        // max = abs(sample)>max? abs(sample): max; 
         file.write(reinterpret_cast<const char*>(&sample), sizeof(sample));
     }
     int postAudioPosition = file.tellp();
-
-    // std::cout << "Max Sample Save: " << max << std::endl;
 
     file.seekp(4, std::ios::beg);
     writeToFile(file, postAudioPosition - 8, 4);
@@ -74,16 +53,16 @@ bool AudioIO::save(const std::string& filename) {
     return true;
 }
 
-std::vector<int16_t>& AudioIO::getSamples() {
+std::vector<int16_t>& AP_AudioIO::getSamples() {
     return m_samples;
 }
 
-std::string AudioIO::getFilePath() const
+std::string AP_AudioIO::getFilePath() const
 {
     return filePath;
 }
 
-bool AudioIO::readHeader(std::ifstream& file) {
+bool AP_AudioIO::readHeader(std::ifstream& file) {
         char buffer[44]; // Buffer large enough for the standard header.
         if (!file.read(buffer, 44)) {
             return false;
@@ -111,13 +90,13 @@ bool AudioIO::readHeader(std::ifstream& file) {
             return readHeaderwithJunk(file, buffer);
         }
         else{
-            return readHeaderwithoutJunk(file, buffer);
+            return readHeaderwithoutJunk(buffer);
         }
         
         return true;
     }
 
-bool AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
+bool AP_AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
 {
     // Skip the JUNK chunk
     int32_t junk_size = m_subchunkSize;
@@ -147,7 +126,7 @@ bool AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
     return true;
 }
 
-bool AudioIO::readHeaderwithoutJunk(std::ifstream& file, char buffer[])
+bool AP_AudioIO::readHeaderwithoutJunk(char buffer[])
 {
     // Read remaining fmt data if fmt is correct
     if (m_fmt != "fmt ") {
@@ -155,7 +134,7 @@ bool AudioIO::readHeaderwithoutJunk(std::ifstream& file, char buffer[])
         return false;
     }
     
-    // file.read(buffer + 24, m_subchunkSize);  // Read the rest of the fmt chunk
+    // Read the rest of the fmt chunk
     m_audioFormat = *reinterpret_cast<int16_t*>(buffer + 20);
     m_numChannels = *reinterpret_cast<int16_t*>(buffer + 22);
     m_sampleRate = *reinterpret_cast<int32_t*>(buffer + 24);
@@ -169,7 +148,7 @@ bool AudioIO::readHeaderwithoutJunk(std::ifstream& file, char buffer[])
     return true;
 }
 
-bool AudioIO::writeHeader(std::ofstream& audio_file){
+bool AP_AudioIO::writeHeader(std::ofstream& audio_file){
     m_dataSize = m_samples.size() * sizeof(int16_t);
     m_FileSize = 36 + m_dataSize;
 
@@ -200,11 +179,11 @@ bool AudioIO::writeHeader(std::ofstream& audio_file){
     return true;
 }
 
-void AudioIO::writeToFile(std::ofstream &file, int32_t value, int32_t size) {
+void AP_AudioIO::writeToFile(std::ofstream &file, int32_t value, int32_t size) {
     file.write(reinterpret_cast<const char*> (&value), size);
 }
 
-std::ostream& operator<< (std::ostream& out, const AudioIO& obj)
+std::ostream& operator<< (std::ostream& out, const AP_AudioIO& obj)
 {
     out << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n";
     out << "File Path: "<< obj.getFilePath() << "\n";
@@ -219,7 +198,7 @@ std::ostream& operator<< (std::ostream& out, const AudioIO& obj)
     return out;
 }
 
-void AudioIO::analyzeWAV() {
+void AP_AudioIO::analyzeWAV() {
     std::ifstream file(filePath, std::ios::binary);
     WAVHeader header;
 
@@ -246,7 +225,7 @@ void AudioIO::analyzeWAV() {
     file.close();
 }
 
-void AudioIO::setSamples(std::vector<int16_t> samples)
+void AP_AudioIO::setSamples(std::vector<int16_t> samples)
 {
     m_samples = samples;
 }
