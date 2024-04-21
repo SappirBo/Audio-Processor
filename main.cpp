@@ -4,6 +4,8 @@
 #include "AP_Audio_Effect/include/AP_Audio_Effect.hpp"
 #include <iostream>
 #include <vector>
+#include <memory>
+
 
 std::vector<std::string> data_path{
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_StereoOut.wav",
@@ -24,28 +26,22 @@ int main() {
         return 1;
     }
 
-    // std::cout << audioIO ; 
+    std::vector<std::unique_ptr<AP_Audio_Effect>> effect_chain;
 
     // Drive is set to be 0-100
-    AP_Drive drive{audioIO,20, 70, 60};
-    drive.processAudio();
-
-    // std::cout << "- - - Before delay: " << audioIO.getSamples().size() ;
-    
+    effect_chain.push_back(std::make_unique<AP_Drive>(audioIO,50, 95, 100));
     // Delay time is best in 3000 to 2 bars
-    AP_Delay delay{audioIO,20, 200, 2225};
-    delay.processAudio();
-    
-    // std::cout << "| After delay: " << audioIO.getSamples().size() << std::endl;
-    
+    effect_chain.push_back(std::make_unique<AP_Delay>(audioIO,35, 200, 2225));
+
+    for(auto& effect : effect_chain)
+    {
+        effect->processAudio();
+    }
     
     if (!audioIO.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
         std::cerr << "Failed to save audio." << std::endl;
         return 1;
     }
-
-    // AudioIO audioIO_out("/home/sappirb/code/Audio-Processor/output/output.wav");
-    // std::cout << audioIO_out ; 
 
     std::cout << "Audio processing completed successfully." << std::endl;
     return 0;
