@@ -1,5 +1,7 @@
 # Audio-Processor
+C++ project focused on demonstrating audio processing techniques using wav files. This project aims to provide an educational toolkit for those interested in learning about audio effects and signal processing.
 
+The program is written in C++ and utilizes standard libraries for processing WAV files. Each audio effect is implemented as a separate module, allowing users to selectively apply these effects to their audio tracks. The project also demonstrates how to chain effects for more complex sound manipulations.
 
 ### Resources
 1. [Digital Audio - Origins of the Sine Wave](https://youtube.com/playlist?list=PLbqhA-NKGP6DxFIF7K5AhBY9kawUOOM0H&si=tKwqCRdj-pGneLOQ)
