@@ -17,17 +17,17 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AudioIO audioIO(data_path.at(0));
+    AudioIO audioIO(data_path.at(4));
 
     if (!audioIO.load()) {
         std::cerr << "Failed to load audio." << std::endl;
         return 1;
     }
 
-    std::cout << audioIO ; 
+    // std::cout << audioIO ; 
 
     // Drive is set to be 0-100
-    AP_Drive drive{audioIO,100, 15, 100};
+    AP_Drive drive{audioIO,20, 70, 60};
     drive.processAudio();
 
     // std::cout << "- - - Before delay: " << audioIO.getSamples().size() ;
@@ -44,8 +44,8 @@ int main() {
         return 1;
     }
 
-    AudioIO audioIO_out("/home/sappirb/code/Audio-Processor/output/output.wav");
-    std::cout << audioIO_out ; 
+    // AudioIO audioIO_out("/home/sappirb/code/Audio-Processor/output/output.wav");
+    // std::cout << audioIO_out ; 
 
     std::cout << "Audio processing completed successfully." << std::endl;
     return 0;

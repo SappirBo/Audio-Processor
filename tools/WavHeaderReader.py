@@ -3,7 +3,8 @@ import struct
 from PathList import PathList
 
 # Load the WAV file to inspect its headers
-file_path = PathList.path_list[0]
+# file_path = PathList.path_list[0]
+file_path = PathList.path_to_output
 
 
 def read_wav_header(file_path):

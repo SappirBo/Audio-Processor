@@ -10,6 +10,9 @@ bool AudioIO::load() {
         std::cerr << "Failed to open file: " << filePath << std::endl;
         return false;
     }
+    file.seekg(0,file.end);
+    int total_num_of_bytes = file.tellg();
+    file.seekg (0, file.beg);
 
     if (!readHeader(file)) {
         std::cerr << "Failed to read header from file: " << filePath << std::endl;
@@ -19,9 +22,23 @@ bool AudioIO::load() {
     m_samples.clear();
     int16_t buffer;
 
+    int pos_before_samples = file.tellg();
+    int bytes_before_read_samples = total_num_of_bytes - pos_before_samples;
+
+    // int max=0;
     while (file.read(reinterpret_cast<char*>(&buffer), sizeof(buffer))) {
+        // max = abs(buffer)>max? abs(buffer): max; 
         m_samples.push_back(buffer);
     }
+    m_samples.erase(m_samples.end() - 1045,m_samples.end() );
+    // int pos_After_samples = file.tellg();
+    // int bytes_after_read_samples = total_num_of_bytes - pos_After_samples;
+
+    // std::cout << "Max Sample Load: " << max << std::endl;
+    // std::cout << "Total number of Bytes: " << total_num_of_bytes << std::endl;
+    // std::cout << "Bytes remain before reading samples: " << bytes_before_read_samples << std::endl;
+    // std::cout << "Bytes remain after reading samples: " << bytes_after_read_samples << std::endl;
+    // std::cout << "pos_After_samples" <<pos_After_samples << std::endl;
 
     file.close();
     return true;
@@ -39,11 +56,15 @@ bool AudioIO::save(const std::string& filename) {
         return false;
     }
 
+    // int max{0};
     int preAudioPosition = file.tellp();
     for (auto sample : m_samples) {
+        // max = abs(sample)>max? abs(sample): max; 
         file.write(reinterpret_cast<const char*>(&sample), sizeof(sample));
     }
     int postAudioPosition = file.tellp();
+
+    // std::cout << "Max Sample Save: " << max << std::endl;
 
     file.seekp(4, std::ios::beg);
     writeToFile(file, postAudioPosition - 8, 4);
@@ -87,7 +108,6 @@ bool AudioIO::readHeader(std::ifstream& file) {
         m_subchunkSize = *reinterpret_cast<int32_t*>(buffer + 16);
         // Check if the next chunk is "fmt " or a "JUNK" chunk
         if (m_fmt == "JUNK") {
-            std::cout << "Location = " << file.tellg() << "\n";
             return readHeaderwithJunk(file, buffer);
         }
         else{
@@ -150,7 +170,7 @@ bool AudioIO::readHeaderwithoutJunk(std::ifstream& file, char buffer[])
 }
 
 bool AudioIO::writeHeader(std::ofstream& audio_file){
-    m_dataSize = m_samples.size() * m_numChannels * m_byteRate;
+    m_dataSize = m_samples.size() * sizeof(int16_t);
     m_FileSize = 36 + m_dataSize;
 
 
