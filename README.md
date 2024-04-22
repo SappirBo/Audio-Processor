@@ -8,3 +8,5 @@ The program is written in C++ and utilizes standard libraries for processing WAV
 2. [How Digital Audio Works - Computerphile](https://www.youtube.com/watch?v=1RIA9U5oXro&t=231s&ab_channel=Computerphile)
 3. [Write a WAV file from scratch - C++ Audio Programming](https://www.youtube.com/watch?v=qqjvB_VxMRM&t=38s&ab_channel=AkashMurthy)
 4. [Digital Audio Fundamentals](https://youtube.com/playlist?list=PLbqhA-NKGP6B6V_AiS-jbvSzdd7nbwwCw&si=62h4d2wjonTB3dEj)
+5. [PortAudio](https://www.portaudio.com/docs/v19-doxydocs/portaudio_8h_source.html)
+6. [PortAudio - GitHub](https://github.com/PortAudio/portaudio)

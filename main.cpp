@@ -2,6 +2,7 @@
 #include "AP_Drive/include/AP_Drive.hpp"
 #include "AP_Delay/include/AP_Delay.hpp"
 #include "AP_Audio_Effect/include/AP_Audio_Effect.hpp"
+#include "AP_WavPlayer/include/AP_WavPlayer.hpp"
 #include <iostream>
 #include <vector>
 #include <memory>
