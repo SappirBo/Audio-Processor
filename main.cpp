@@ -33,7 +33,7 @@ int main() {
     effect_chain.push_back(std::make_unique<AP_Drive>(AP_AudioIO,70, 50, 60));
     
     // Delay time is best in 3000 to 2 bars
-    effect_chain.push_back(std::make_unique<AP_Delay>(AP_AudioIO,5, 600, 1500));
+    effect_chain.push_back(std::make_unique<AP_Delay>(AP_AudioIO,30, 600, 2225));
 
     for(auto& effect : effect_chain)
     {
