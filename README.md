@@ -10,3 +10,4 @@ The program is written in C++ and utilizes standard libraries for processing WAV
 4. [Digital Audio Fundamentals](https://youtube.com/playlist?list=PLbqhA-NKGP6B6V_AiS-jbvSzdd7nbwwCw&si=62h4d2wjonTB3dEj)
 5. [PortAudio](https://www.portaudio.com/docs/v19-doxydocs/portaudio_8h_source.html)
 6. [PortAudio - GitHub](https://github.com/PortAudio/portaudio)
+7. [Digital Audio Compression - Computerphile](https://www.youtube.com/watch?v=KGZ0een8vSE&ab_channel=Computerphile)
