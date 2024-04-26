@@ -14,6 +14,7 @@ add_compile_options(-Wall -Wextra -pedantic)
 add_subdirectory(AP_AudioIO)
 add_subdirectory(AP_Drive)
 add_subdirectory(AP_Delay)
+add_subdirectory(AP_Compressor)
 add_subdirectory(AP_Audio_Effect)
 add_subdirectory(AP_WavPlayer)
 
@@ -26,6 +27,7 @@ target_link_libraries(AudioApp PRIVATE
     AP_Audio_Effect
     AP_Drive 
     AP_Delay
+    AP_Compressor
     AP_WavPlayer
 )
 
@@ -34,6 +36,7 @@ target_include_directories(AudioApp PRIVATE
     ${PROJECT_SOURCE_DIR}/AP_Audio_Effect/include
     ${PROJECT_SOURCE_DIR}/AP_Delay/include
     ${PROJECT_SOURCE_DIR}/AP_Drive/include
+    ${PROJECT_SOURCE_DIR}/AP_Compressor/include
     ${PROJECT_SOURCE_DIR}/AP_AudioIO/include
     ${PROJECT_SOURCE_DIR}/AP_WavPlayer/include
 )

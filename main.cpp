@@ -1,6 +1,7 @@
 #include "AP_AudioIO/include/AP_AudioIO.hpp"
 #include "AP_Drive/include/AP_Drive.hpp"
 #include "AP_Delay/include/AP_Delay.hpp"
+#include "AP_Compressor/include/AP_Compressor.hpp"
 #include "AP_Audio_Effect/include/AP_Audio_Effect.hpp"
 #include "AP_WavPlayer/include/AP_WavPlayer.hpp"
 #include <iostream>

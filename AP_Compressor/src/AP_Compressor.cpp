@@ -1,7 +1,7 @@
 #include "AP_Compressor.hpp"
 
-AP_Compressor::AP_Compressor(AP_AudioIO& _audio, int32_t _mix = 0, int32_t _level = 0, 
-        float _threshold = 0, float _ratio = 1.0, float _attack = 1.0, float _release = 100.0):
+AP_Compressor::AP_Compressor(AP_AudioIO& _audio, int32_t _mix, int32_t _level, 
+        float _threshold, float _ratio, float _attack, float _release):
         AP_Audio_Effect(_audio,_mix,_level)
 {
     setThreshold(_threshold);
