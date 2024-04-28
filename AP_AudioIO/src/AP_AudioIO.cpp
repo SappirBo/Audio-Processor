@@ -85,15 +85,26 @@ bool AP_AudioIO::readHeader(std::ifstream& file) {
         // "fmt " subchunk
         m_fmt = std::string(buffer + 12, 4);
         m_subchunkSize = *reinterpret_cast<int32_t*>(buffer + 16);
+
+        int32_t current_pos{20};
+        int32_t start_point{20};
+
         // Check if the next chunk is "fmt " or a "JUNK" chunk
         if (m_fmt == "JUNK") {
-            return readHeaderwithJunk(file, buffer);
+            removeChunkAndUpdate(file, buffer, current_pos,start_point);
         }
-        else{
-            return readHeaderwithoutJunk(buffer);
+
+        if(m_fmt == "bext")
+        {
+            removeChunkAndUpdate(file, buffer, current_pos,start_point);
         }
-        
-        return true;
+
+        if(m_fmt == "Fake")
+        {
+            removeChunkAndUpdate(file, buffer, current_pos,start_point);
+        }
+
+        return readHeader(buffer, start_point);
     }
 
 bool AP_AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
@@ -107,9 +118,11 @@ bool AP_AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
     file.read(buffer, 32); // Read the next 24 bytes which should include "fmt " and its content
     m_fmt = std::string(buffer, 4);
     m_subchunkSize = *reinterpret_cast<int32_t*>(buffer + 4);
+    
     // Read remaining fmt data if fmt is correct
     if (m_fmt != "fmt ") 
     {
+        std::cout << "FMT = " << m_fmt <<", m_subchunkSize: " << m_subchunkSize<< std::endl;
         std::cerr << "Format chunk missing or not recognized." << std::endl;
         return false;
     }
@@ -126,24 +139,23 @@ bool AP_AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
     return true;
 }
 
-bool AP_AudioIO::readHeaderwithoutJunk(char buffer[])
+bool AP_AudioIO::readHeader(char buffer[], int32_t start_point)
 {
     // Read remaining fmt data if fmt is correct
     if (m_fmt != "fmt ") {
-        std::cerr << "Format chunk missing or not recognized." << std::endl;
+        std::cerr << "Format chunk missing or not recognized (fmt = '"<< m_fmt << "')." << std::endl;
         return false;
     }
-    
-    // Read the rest of the fmt chunk
-    m_audioFormat = *reinterpret_cast<int16_t*>(buffer + 20);
-    m_numChannels = *reinterpret_cast<int16_t*>(buffer + 22);
-    m_sampleRate = *reinterpret_cast<int32_t*>(buffer + 24);
-    m_byteRate = *reinterpret_cast<int32_t*>(buffer + 28);
-    m_blockAlign = *reinterpret_cast<int16_t*>(buffer + 32);
-    m_bitsPerSample = *reinterpret_cast<int16_t*>(buffer + 34);
 
-    m_data = std::string(buffer + 36, 4);
-    m_dataSize = *reinterpret_cast<int32_t*>(buffer + 40); // Number of bytes in the data.
+    m_audioFormat   = *reinterpret_cast<int16_t*>(buffer + start_point + 0);
+    m_numChannels   = *reinterpret_cast<int16_t*>(buffer + start_point + 2);
+    m_sampleRate    = *reinterpret_cast<int32_t*>(buffer + start_point + 4);
+    m_byteRate      = *reinterpret_cast<int32_t*>(buffer + start_point + 8);
+    m_blockAlign    = *reinterpret_cast<int16_t*>(buffer + start_point + 12);
+    m_bitsPerSample = *reinterpret_cast<int16_t*>(buffer + start_point + 14);
+
+    m_data = std::string(buffer + start_point + 16, 4);
+    m_dataSize = *reinterpret_cast<int32_t*>(buffer + start_point + 20); // Number of bytes in the data.
 
     return true;
 }
@@ -229,3 +241,27 @@ void AP_AudioIO::setSamples(std::vector<int16_t> samples)
 {
     m_samples = samples;
 }
+
+void AP_AudioIO::skipFile(std::ifstream& _file, int32_t _bytes)
+{
+    _file.seekg(_bytes, std::ios_base::beg);
+}
+
+void AP_AudioIO::skipSubChunk(std::ifstream& _file, int32_t _bytes, char (& _buffer)[44])
+{
+    skipFile(_file, _bytes);
+    _file.read(_buffer, 32); // Read the next 24 bytes which should include "fmt " and its content
+    m_fmt = std::string(_buffer, 4);
+    m_subchunkSize = *reinterpret_cast<int32_t*>(_buffer + 4);
+}
+
+void AP_AudioIO::removeChunkAndUpdate(std::ifstream& _file, char (& _buffer)[44], 
+        int32_t& current_pos, int32_t& start_point)
+{
+    int32_t bytes_for_fmt_and_chunk_size{8};
+    int32_t prev_chunk_size{m_subchunkSize};
+    skipSubChunk(_file, current_pos + m_subchunkSize, _buffer);
+    current_pos = current_pos + prev_chunk_size + bytes_for_fmt_and_chunk_size;
+    start_point = bytes_for_fmt_and_chunk_size;
+}
+

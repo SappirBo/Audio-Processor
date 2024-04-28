@@ -4,7 +4,7 @@ from PathList import PathList
 
 # Load the WAV file to inspect its headers
 # file_path = PathList.path_list[0]
-file_path = PathList.path_to_output
+file_path = PathList.path_list[5]
 
 
 def read_wav_header(file_path):
@@ -90,7 +90,7 @@ def interpret_wav_data(header_info):
 # Read and display the WAV file header properties
 header_settings = read_wav_header(file_path)
 
-
+print(f'- - - - - - file path: {file_path} - - - - - -')
 print('- - - - - - Header Information: - - - - - -')
 for header_setting, value in header_settings.items():
     print('     ',header_setting , ': ', value)

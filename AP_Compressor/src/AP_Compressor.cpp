@@ -76,3 +76,8 @@ void AP_Compressor::processAudio()
         }
     }
 }
+
+void AP_Compressor::compress(int16_t& _sample)
+{
+    _sample = static_cast<int16_t>(static_cast<float>(_sample)/m_ratio);
+}

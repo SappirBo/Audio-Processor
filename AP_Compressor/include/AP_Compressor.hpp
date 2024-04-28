@@ -7,7 +7,9 @@ class AP_Compressor: public AP_Audio_Effect
 {
 private:
     /* m_threashold is set to be number from 0 to -100 ([0,-100]) as 0 in max amplitude*/
-    float m_threshold; 
+    float m_threshold;
+
+    /** m_ratio is set from 1 (that means no change) to 8 (max compress)*/ 
     float m_ratio;
     float m_attack;  //ms
     float m_release; //ms

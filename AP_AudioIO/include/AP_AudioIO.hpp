@@ -74,9 +74,14 @@ private:
     bool writeHeader(std::ofstream& file);
 
     bool readHeaderwithJunk(std::ifstream& file, char buffer[]);
-    bool readHeaderwithoutJunk(char buffer[]);
+    bool readHeader(char buffer[], int32_t start_point);
 
     void writeToFile(std::ofstream &file, int32_t value, int32_t size);
+
+    void skipFile(std::ifstream& _file, int32_t _bytes);
+    void skipSubChunk(std::ifstream& _file, int32_t _bytes, char (& _buffer)[44]);
+    void removeChunkAndUpdate(std::ifstream& _file, char (& _buffer)[44], 
+        int32_t& current_pos, int32_t& start_point);
 };
 
 #endif // AUDIOIO_H
