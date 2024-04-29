@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 from PathList import PathList
 
 # Load WAV file
-# wav_obj = wave.open(PathList.path_to_output, 'rb')
-wav_obj = wave.open(PathList.path_list[0], 'rb')
+num = 2
+wav_obj = wave.open(PathList.path_to_output, 'rb')
+# wav_obj = wave.open(PathList.path_list[num], 'rb')
 
 # Get audio properties
 sample_freq = wav_obj.getframerate()
@@ -25,7 +26,7 @@ times = np.linspace(0, t_audio, num=len(l_channel))  # Adjust number of points i
 # Plotting
 plt.figure(figsize=(15, 5))
 plt.plot(times, l_channel)
-plt.title('Channel')
+plt.title('Channel: '+ PathList.path_list[num])
 plt.ylabel('Signal Value')
 plt.xlabel('Time (s)')
 plt.xlim(0, t_audio)

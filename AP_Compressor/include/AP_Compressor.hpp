@@ -3,6 +3,12 @@
 
 #include <AP_Audio_Effect.hpp>
 
+enum class compressionSpeed
+{
+    
+
+};
+
 class AP_Compressor: public AP_Audio_Effect
 {
 private:
@@ -15,7 +21,7 @@ private:
     float m_release; //ms
 public:
     AP_Compressor(AP_AudioIO& _audio, int32_t _mix = 0, int32_t _level = 0, 
-        float _threshold = 0, float _ratio = 1.0, float _attack = 1.0, float _release = 100.0);
+        float _threshold = 0, float _ratio = 1.0, float _attack = 10.0, float _release = 100.0);
     ~AP_Compressor() = default;
 
     void processAudio();
@@ -25,6 +31,7 @@ public:
     void setRelease(float _r);
 
 private:
-    void compress(int16_t& _sample);
+    void applyCompression();
+    void compress(int16_t& _sample, float _refinement);
 };
 #endif
