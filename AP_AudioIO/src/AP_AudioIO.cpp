@@ -89,57 +89,17 @@ bool AP_AudioIO::readHeader(std::ifstream& file) {
         int32_t current_pos{20};
         int32_t start_point{20};
 
-        // Check if the next chunk is "fmt " or a "JUNK" chunk
-        if (m_fmt == "JUNK") {
-            removeChunkAndUpdate(file, buffer, current_pos,start_point);
-        }
-
-        if(m_fmt == "bext")
+        // Check if the next chunk is fmt or a un used other chunk
+        if(!removeUnusedChuncks(file, buffer, current_pos,start_point))
         {
-            removeChunkAndUpdate(file, buffer, current_pos,start_point);
+            std::cout << "Error: got unknown chuncks - could not safely remove them (readHeader)." << std::endl;
+            return false;
         }
 
-        if(m_fmt == "Fake")
-        {
-            removeChunkAndUpdate(file, buffer, current_pos,start_point);
-        }
-
-        return readHeader(buffer, start_point);
+        return readHeaderData(buffer, start_point);
     }
 
-bool AP_AudioIO::readHeaderwithJunk(std::ifstream& file, char buffer[])
-{
-    // Skip the JUNK chunk
-    int32_t junk_size = m_subchunkSize;
-    int32_t junk_start_point = 20;
-    file.seekg(junk_start_point + junk_size, std::ios_base::beg);  // Move file pointer after the JUNK data
-
-    // Read the actual fmt chunk after the JUNK
-    file.read(buffer, 32); // Read the next 24 bytes which should include "fmt " and its content
-    m_fmt = std::string(buffer, 4);
-    m_subchunkSize = *reinterpret_cast<int32_t*>(buffer + 4);
-    
-    // Read remaining fmt data if fmt is correct
-    if (m_fmt != "fmt ") 
-    {
-        std::cout << "FMT = " << m_fmt <<", m_subchunkSize: " << m_subchunkSize<< std::endl;
-        std::cerr << "Format chunk missing or not recognized." << std::endl;
-        return false;
-    }
-
-    m_audioFormat = *reinterpret_cast<int16_t*>(buffer + 8);
-    m_numChannels = *reinterpret_cast<int16_t*>(buffer + 10);
-    m_sampleRate = *reinterpret_cast<int32_t*>(buffer + 12);
-    m_byteRate = *reinterpret_cast<int32_t*>(buffer + 16);
-    m_blockAlign = *reinterpret_cast<int16_t*>(buffer + 20);
-    m_bitsPerSample = *reinterpret_cast<int16_t*>(buffer + 22);
-
-    m_data = std::string(buffer + 24, 4);
-    m_dataSize = *reinterpret_cast<int32_t*>(buffer + 28); // Number of bytes in the data.
-    return true;
-}
-
-bool AP_AudioIO::readHeader(char buffer[], int32_t start_point)
+bool AP_AudioIO::readHeaderData(char buffer[], int32_t start_point)
 {
     // Read remaining fmt data if fmt is correct
     if (m_fmt != "fmt ") {
@@ -210,33 +170,6 @@ std::ostream& operator<< (std::ostream& out, const AP_AudioIO& obj)
     return out;
 }
 
-void AP_AudioIO::analyzeWAV() {
-    std::ifstream file(filePath, std::ios::binary);
-    WAVHeader header;
-
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file." << std::endl;
-        return;
-    }
-
-    // Reading the header
-    file.read(reinterpret_cast<char*>(&header), sizeof(WAVHeader));
-
-    // Check if the headers are correct
-    if (strncmp(header.chunkID, "RIFF", 4) != 0 || strncmp(header.format, "WAVE", 4) != 0) {
-        std::cerr << "This is not a valid WAV file." << std::endl;
-        return;
-    }
-
-    // Output the information
-    std::cout << "Number of Channels: " << header.numChannels << std::endl;
-    std::cout << "Sample Rate: " << header.sampleRate << std::endl;
-    std::cout << "Bits Per Sample: " << header.bitsPerSample << std::endl;
-    std::cout << "Data Size: " << header.subchunk2Size << " bytes" << std::endl;
-
-    file.close();
-}
-
 void AP_AudioIO::setSamples(std::vector<int16_t> samples)
 {
     m_samples = samples;
@@ -264,4 +197,36 @@ void AP_AudioIO::removeChunkAndUpdate(std::ifstream& _file, char (& _buffer)[44]
     current_pos = current_pos + prev_chunk_size + bytes_for_fmt_and_chunk_size;
     start_point = bytes_for_fmt_and_chunk_size;
 }
+
+bool AP_AudioIO::removeUnusedChuncks(std::ifstream& _file, char (& _buffer)[44], 
+        int32_t& current_pos, int32_t& start_point)
+{
+    while(m_fmt != "fmt ")
+    {
+        if (m_fmt == "JUNK") {
+            removeChunkAndUpdate(_file, _buffer, current_pos,start_point);
+        }
+        else if(m_fmt == "bext")
+        {
+            removeChunkAndUpdate(_file, _buffer, current_pos,start_point);
+        }
+
+        else if(m_fmt == "Fake")
+        {
+            removeChunkAndUpdate(_file, _buffer, current_pos,start_point);
+        }
+        else if(m_fmt == "fmt ")
+        {
+            return true;
+        }
+        else
+        {
+            std::cout << "Error: unknown fmt chunk, m_fmt = '" << m_fmt <<"' (removeUnusedChuncks)." << std::endl;
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
