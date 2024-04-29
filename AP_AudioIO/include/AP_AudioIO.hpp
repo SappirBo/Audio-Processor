@@ -11,20 +11,20 @@ public:
     bool load();
     bool save(const std::string& filename);
     std::vector<int16_t>& getSamples();
-    std::string getFilePath() const;
-    const std::string& getRIFF() const { return m_RIFF; }
-    int32_t getFileSize() const { return m_FileSize; }
-    const std::string& getWAVE() const { return m_WAVE; }
-    const std::string& getFmt() const { return m_fmt; }
-    int32_t getSubchunkSize() const { return m_subchunkSize; }
-    int16_t getAudioFormat() const { return m_audioFormat; }
-    int16_t getNumChannels() const { return m_numChannels; }
-    int32_t getSampleRate() const { return m_sampleRate; }
-    int32_t getByteRate() const { return m_byteRate; }
-    int16_t getBlockAlign() const { return m_blockAlign; }
-    int16_t getBitsPerSample() const { return m_bitsPerSample; }
-    const std::string& getData() const { return m_data; }
-    int32_t getDataSize() const { return m_dataSize; }
+    std::string           getFilePath() const;
+    const std::string&    getRIFF() const { return m_RIFF; }
+    int32_t               getFileSize() const { return m_FileSize; }
+    const std::string&    getWAVE() const { return m_WAVE; }
+    const std::string&    getFmt() const { return m_fmt; }
+    int32_t               getSubchunkSize() const { return m_subchunkSize; }
+    int16_t               getAudioFormat() const { return m_audioFormat; }
+    int16_t               getNumChannels() const { return m_numChannels; }
+    int32_t               getSampleRate() const { return m_sampleRate; }
+    int32_t               getByteRate() const { return m_byteRate; }
+    int16_t               getBlockAlign() const { return m_blockAlign; }
+    int16_t               getBitsPerSample() const { return m_bitsPerSample; }
+    const std::string&    getData() const { return m_data; }
+    int32_t               getDataSize() const { return m_dataSize; }
 
     void setSamples(std::vector<int16_t> samples);
     
