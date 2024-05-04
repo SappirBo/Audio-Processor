@@ -1,4 +1,4 @@
-#include "AP_Compressor.hpp"
+#include "../include/AP_Compressor.hpp"
 
 AP_Compressor::AP_Compressor(AP_AudioIO& _audio, int32_t _mix, int32_t _level, 
         float _threshold, float _ratio, float _attack, float _release):

@@ -1,8 +1,8 @@
 #ifndef AP_DRIVE_H
 #define AP_DRIVE_H
 
-#include "AP_AudioIO.hpp"
-#include "AP_Audio_Effect.hpp"
+#include "../../AP_AudioIO\include/AP_AudioIO.hpp"
+#include "../../AP_Audio_Effect/include/AP_Audio_Effect.hpp"
 #include <iostream>
 
 class AP_Drive: public AP_Audio_Effect {

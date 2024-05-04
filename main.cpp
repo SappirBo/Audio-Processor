@@ -10,7 +10,7 @@
 
 
 std::vector<std::string> data_path{
-    "/home/sappirb/code/Audio-Processor/data/Audio_Processor_StereoOut.wav",
+    "data\\Audio_Processor_StereoOut.wav",
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Bass.wav",
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Guitar.wav",
     "/home/sappirb/code/Audio-Processor/data/Audio_Processor_Drums.wav",
@@ -25,7 +25,7 @@ std::vector<std::string> data_path{
 };
 
 int main() {
-    AP_AudioIO audio(data_path.at(6));
+    AP_AudioIO audio(data_path.at(0));
 
     if (!audio.load()) {
         std::cerr << "Failed to load audio." << std::endl;
@@ -50,7 +50,7 @@ int main() {
         effect->processAudio();
     }
     
-    if (!audio.save("/home/sappirb/code/Audio-Processor/output/output.wav")) {
+    if (!audio.save("output\\output.wav")) {
         std::cerr << "Failed to save audio." << std::endl;
         return 1;
     }

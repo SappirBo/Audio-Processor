@@ -1,8 +1,8 @@
 #ifndef AP_DELAY_H
 #define AP_DELAY_H
 
-#include "AP_AudioIO.hpp"
-#include "AP_Audio_Effect.hpp"
+#include "../../AP_AudioIO/include/AP_AudioIO.hpp"
+#include "../../AP_Audio_Effect/include/AP_Audio_Effect.hpp"
 #include <iostream>
 
 class AP_Delay: public AP_Audio_Effect

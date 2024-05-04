@@ -1,8 +1,8 @@
 #ifndef AP_WAVPLAYER_HPP
 #define AP_WAVPLAYER_HPP
 
-#include "AP_AudioIO.hpp"
-#include <portaudio.h>
+#include "../../AP_AudioIO/include/AP_AudioIO.hpp"
+#include "../include/portaudio.h"
 #include <iostream>
 
 class AP_WavPlayer

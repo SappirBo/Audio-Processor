@@ -1,4 +1,4 @@
-#include "AP_WavPlayer.hpp"
+#include "../include/AP_WavPlayer.hpp"
 
 AP_WavPlayer::AP_WavPlayer(AP_AudioIO& audio)
 :m_audioIO(audio)

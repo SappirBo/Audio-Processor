@@ -1,7 +1,7 @@
 # ifndef AP_AUDIO_EFFECT_HPP
 # define AP_AUDIO_EFFECT_HPP
 
-#include "AP_AudioIO.hpp"
+#include "../../AP_AudioIO/include/AP_AudioIO.hpp"
 #include <cstdint>
 #include <iostream>
 

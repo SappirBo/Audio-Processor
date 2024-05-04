@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cstdint>
 
 class AP_AudioIO {
 public:

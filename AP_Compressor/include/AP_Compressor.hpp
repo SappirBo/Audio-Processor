@@ -1,7 +1,7 @@
 #ifndef AP_COMPRESSOR_HPP
 #define AP_COMPRESSOR_HPP
 
-#include <AP_Audio_Effect.hpp>
+#include "../../AP_Audio_Effect/include/AP_Audio_Effect.hpp"
 
 enum class compressionSpeed
 {
