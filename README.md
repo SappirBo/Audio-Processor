@@ -12,3 +12,4 @@ The program is written in C++ and utilizes standard libraries for processing WAV
 6. [PortAudio - GitHub](https://github.com/PortAudio/portaudio)
 7. [Digital Audio Compression - Computerphile](https://www.youtube.com/watch?v=KGZ0een8vSE&ab_channel=Computerphile)
 8. [C++ Programming Tutorial - Build a 3-Band Compressor Audio Plugin (w/ JUCE Framework)](https://www.youtube.com/watch?v=Mo0Oco3Vimo&t=79s&ab_channel=freeCodeCamp.org)
+9. [Digital Filter Basics](https://youtube.com/playlist?list=PLbqhA-NKGP6Afr_KbPUuy_yIBpPR4jzWo&si=wf9LFl6y_iOtUERS)
