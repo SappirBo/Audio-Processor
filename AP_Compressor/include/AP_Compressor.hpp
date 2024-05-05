@@ -3,11 +3,6 @@
 
 #include "../../AP_Audio_Effect/include/AP_Audio_Effect.hpp"
 
-enum class compressionSpeed
-{
-    
-
-};
 
 class AP_Compressor: public AP_Audio_Effect
 {

@@ -66,7 +66,9 @@ void AP_Compressor::applyCompression()
 
     int32_t threshold_range{100};
     int32_t sample_threashold_chunck{INT16_MAX/threshold_range};
-    int16_t sample_threashold{INT16_MAX - static_cast<int16_t>(m_threshold * static_cast<float>(sample_threashold_chunck))};
+
+    int16_t sample_threashold{static_cast<int16_t>(INT16_MAX)};
+    sample_threashold -= static_cast<int16_t>(m_threshold * static_cast<float>(sample_threashold_chunck));
 
     bool apply_compression{false};
     int32_t attack_counter{0};
